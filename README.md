@@ -61,14 +61,14 @@ python backend/genesis/genesis-agent.py  # Deploys DAO/REP
 
 **English Markdown**
 
-- [V4 Full EN](docs/en/forge-v4-full-en.md)
-- [V3.3 Full EN](docs/en/forge-v3.3-full-en.md)
-- [V3.2 Full EN](docs/en/forge-v3.2-full-en.md)
+- [V4 Full EN](docs/en%20/forge-v4-full-en.md)
+- [V3.3 Full EN](docs/en%20/forge-v3.3-full-en.md)
+- [V3.2 Full EN](docs/en%20/forge-v3.2-full-en.md)
 
 **Other**
 
 - [Deployment Examples](docs/deployment/)
-- [Socio-Technical Parameters (V3)](docs/en/forge-v3-socio-technical-parameters.md)
+- [Socio-Technical Parameters (V3)](docs/en%20/forge-v3-socio-technical-parameters.md)
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)  
 [![Stars](https://img.shields.io/github/stars/tkdev-forge/forge?style=social)](https://github.com/tkdev-forge/forge/stargazers)
