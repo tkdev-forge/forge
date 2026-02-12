@@ -1,4 +1,3 @@
-```markdown
 # Forge V3.2: Socio-Technical Parameters & Domain Profiles
 
 *Supplement to the Forge V3 Architecture Documentation*  
