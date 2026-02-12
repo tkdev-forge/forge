@@ -1,5 +1,3 @@
-Erstelle in GitHub **`docs/en/forge-v3-socio-technical-parameters.md`** und füge diesen Text ein:
-
 ```markdown
 # Forge V3: Socio-Technical Parameters & Domain Profiles
 
