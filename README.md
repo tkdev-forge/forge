@@ -1,10 +1,10 @@
-# Forge Framework V4 🛠️
+﻿# Forge Framework V4 🛠️
 
 **Universal, host-agnostic OS for scalable Human-AI collaboration.**  
 From 3-5 founders to 100k agents across 100 projects. 11-Layer architecture with Red Queen REP (decay + boosts), shared REP staking, tiered access (0-3), M2M economy, ZK privacy, prediction markets & per-project L3 rollups. [file:5]
 
 ## Layers Diagram
-```mermaid
+`mermaid
 graph TD
     A[Layer 1: Access<br/>DID/REP Gates] --> B[Layer 2: Agent Core<br/>OpenClaw Sandbox]
     B --> C[Layer 3: Communication<br/>Pi Protocol MQTT]
@@ -19,7 +19,7 @@ graph TD
     
     style A fill:#e1f5fe
     style K fill:#c8e6c9
-```
+`
 
 ## Core Features
 
@@ -43,10 +43,10 @@ graph TD
 2. **Deploy Genesis Agent** (500 LOC Python): Mint contracts on Optimism.
 3. **Bootstrap Governance**: REP-weighted vote on policies.
 
-```bash
+`ash
 pip install openclaw web3 psycopg2
 python backend/genesis/genesis-agent.py  # Deploys DAO/REP
-```
+`
 
 ## Tech Stack
 
