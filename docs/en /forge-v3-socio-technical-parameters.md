@@ -1,5 +1,5 @@
 ```markdown
-# Forge V3: Socio-Technical Parameters & Domain Profiles
+# Forge V3.2: Socio-Technical Parameters & Domain Profiles
 
 *Supplement to the Forge V3 Architecture Documentation*  
 **Version 1.0 | February 2026**
@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-Forge V3 defines reputation (REP), governance thresholds, and M2M transaction limits through technical parameters such as decay-rate, activity-booster, and REP thresholds. These parameters are not just technical variables – they encode implicit social expectations about work rhythms, contribution forms, and power dynamics.
+Forge V3.2 defines reputation (REP), governance thresholds, and M2M transaction limits through technical parameters such as decay-rate, activity-booster, and REP thresholds. These parameters are not just technical variables – they encode implicit social expectations about work rhythms, contribution forms, and power dynamics.
 
 This document shows:
 
