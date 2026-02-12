@@ -243,12 +243,10 @@ python backend/genesis/genesis-agent.py --network optimism
 - **Monitoring**: Prometheus + Market Signals.
 
 ## Docs
-
-**English Markdown**
-
-- [V4 Full EN](docs/en%20/forge-v4-full-en.md)
-- [V3.3 Full EN](docs/en%20/forge-v3.3-full-en.md)
-- [V3.2 Full EN](docs/en%20/forge-v3.2-full-en.md)
+**Main**
+- [V4 Full EN](docs/en%20/forge-v4-full-en.md) (Multi-Project)
+- [V3.3 Full EN](docs/en%20/forge-v3.3-full-en.md) (Optional Layers)
+- [V3.2 Full EN](docs/en%20/forge-v3.2-full-en.md) (Base Layers)
 
 **Other**
 
