@@ -1,0 +1,42 @@
+# Forge Deployment Examples
+
+## **Solo Developer (1 Person, 0€)**
+- **Zweck**: Persönliches Tool (z.B. Code-Review-Agent)
+- **Setup**: Local OpenClaw + PostgreSQL (Docker)
+- **Tiers**: Tier 1 nur (10 REP)
+- **Deployment**: `python genesis-agent.py` (Sepolia Testnet)
+- **Skalierung**: 1-5 Agents, 0 L3
+
+## **Small Team (2-10, 50€/Monat)**
+- **Zweck**: Open-Source-Projekt (z.B. CRM-Plugin)
+- **Infra**: Hetzner 2€ Node + Optimism L2
+- **Tiers**: 0-2 (GitHub Oracle für REP)
+- **Agents**: Contributor, Reviewer, Monitor
+- **M2M**: Compute trades (Tier 1: €100 limit)
+
+## **Startup/Team (10-50, 200€/Monat)**
+- **Zweck**: SaaS (z.B. IoT-Dashboard)
+- **Infra**: DigitalOcean K8s + L2
+- **Tiers**: Voll (Killswitch Tier 3)
+- **Deployment**: Terraform + CI/CD
+- **Features**: Prediction Markets, ZK Privacy
+
+## **Enterprise (50-500, 2k€/Monat)**
+- **Zweck**: CRM/ERP/IoT Stack (V4)
+- **Infra**: Multi-L3 Rollups (Arbitrum Orbit)
+- **Cross-Project**: REP-Bridges (Optimism↔Solana)
+- **Agents**: MetaOrchestrator, BridgeAgent
+
+## **Stadt/Region (500+, 10k€/Monat)**
+- **Zweck**: Leipzig Smart City (V3.2)
+- **Tiers**: Bürger → Stadtrat (eID KYC)
+- **M2M**: Energy Grid (kWh trades)
+- **Governance**: REP-DAO + Multisig
+
+## **Multi-City/Meta (1000+, V4)**
+- **Zweck**: Berlin-München Grid
+- **L3**: Per-City Rollups + Shared Sequencer
+- **Meta-Economy**: Cross-REP (50% conversion)
+
+**Quickstart**: See genesis-agent.py + V4 PDF (Layer 11).
+---
