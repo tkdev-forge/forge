@@ -67,7 +67,7 @@ python backend/genesis/genesis-agent.py  # Deploys DAO/REP
 
 **Other**
 
-- [Deployment Examples](docs/deployment/)
+- [Deployment Examples](docs/en&20/deployment.md)
 - [Socio-Technical Parameters (V3)](docs/en%20/forge-v3-socio-technical-parameters.md)
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)  
