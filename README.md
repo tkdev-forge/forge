@@ -244,9 +244,9 @@ python backend/genesis/genesis-agent.py --network optimism
 
 ## Docs
 **Main**
-- [V4 Full EN](docs/en%20/forge-v4-full-en.md) (Multi-Project)
-- [V3.3 Full EN](docs/en%20/forge-v3.3-full-en.md) (Optional Layers)
-- [V3.2 Full EN](docs/en%20/forge-v3.2-full-en.md) (Universal Framework)
+- [Forge-V4](docs/en%20/forge-v4-full-en.md) (Multi-Project)
+- [Forge-V.3.3](docs/en%20/forge-v3.3-full-en.md) (Optional Layers)
+- [Forge-V3.2](docs/en%20/forge-v3.2-full-en.md) (Universal Framework)
 
 **Other**
 
