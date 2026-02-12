@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-Forge Framework V3.2 is a universal operating system for human-AI collaboration that can operate in any economic system or nation state [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_87dd3f4c-2f55-4d34-9577-ea68edfb26a0/2d4780fd-16ba-4d9f-b230-4ef3aa7a1072/Forge-Framework-V3.3.pdf). It is technologically and philosophically independent from Forge-12, a specific post-national societal concept.
+Forge Framework V3.2 is a universal operating system for human-AI collaboration that can operate in any economic system or nation state. It is technologically and philosophically independent from Forge-12, a specific post-national societal concept.
 
 ### Core Architecture V3.2
 
@@ -26,7 +26,7 @@ Forge Framework V3.2 is a universal operating system for human-AI collaboration 
 
 ### 1.1 Principle: Tier = Derived Access-Level from REP
 
-Forge primarily knows **continuous REP-scores** with Red-Queen-Decay [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_87dd3f4c-2f55-4d34-9577-ea68edfb26a0/667681c7-065a-47ba-b764-bf76a2267c8f/Forge-V3-Sozio-technische-Parameter-Domanen-Profile.pdf). Tiers are an abstraction layer that translates REP into discrete access-levels.
+Forge primarily knows **continuous REP-scores** with Red-Queen-Decay. Tiers are an abstraction layer that translates REP into discrete access-levels.
 
 **Default-Mapping (overridable per deployment):**
 
@@ -64,13 +64,13 @@ contract ForgeREP is ERC721, Ownable {
         bool hasEmergencyAccess;
     }
 
-    TierConfig public tierConfigs; [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_87dd3f4c-2f55-4d34-9577-ea68edfb26a0/2d4780fd-16ba-4d9f-b230-4ef3aa7a1072/Forge-Framework-V3.3.pdf)
+    TierConfig public tierConfigs;
 
     constructor() {
         tierConfigs = TierConfig(0, "Guest", false, false, false, false);
-        tierConfigs = TierConfig(10, "User", true, false, false, false); [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_87dd3f4c-2f55-4d34-9577-ea68edfb26a0/cb6b6eb6-8b6e-4fcc-b9d4-1932661e3ceb/Forge-Meta-Framework.pdf)
-        tierConfigs = TierConfig(100, "Steward", true, true, true, false); [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_87dd3f4c-2f55-4d34-9577-ea68edfb26a0/667681c7-065a-47ba-b764-bf76a2267c8f/Forge-V3-Sozio-technische-Parameter-Domanen-Profile.pdf)
-        tierConfigs = TierConfig(500, "Root", true, true, true, true); [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_87dd3f4c-2f55-4d34-9577-ea68edfb26a0/b6af6a2e-46bb-406d-8dbc-605f766cc025/Forge-Framework-V3.2.pdf)
+        tierConfigs = TierConfig(10, "User", true, false, false, false); 
+        tierConfigs = TierConfig(100, "Steward", true, true, true, false); 
+        tierConfigs = TierConfig(500, "Root", true, true, true, true); 
     }
 
     function getTier(address member) public view returns (uint8) {
@@ -115,11 +115,11 @@ class TierValidator:
         tier_config = self.rep_contract.functions.tierConfigs(tier).call()
         return {
             "tier": tier,
-            "label": tier_config, [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_87dd3f4c-2f55-4d34-9577-ea68edfb26a0/cb6b6eb6-8b6e-4fcc-b9d4-1932661e3ceb/Forge-Meta-Framework.pdf)
-            "can_spawn_agents": tier_config, [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_87dd3f4c-2f55-4d34-9577-ea68edfb26a0/667681c7-065a-47ba-b764-bf76a2267c8f/Forge-V3-Sozio-technische-Parameter-Domanen-Profile.pdf)
-            "can_vote": tier_config, [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_87dd3f4c-2f55-4d34-9577-ea68edfb26a0/b6af6a2e-46bb-406d-8dbc-605f766cc025/Forge-Framework-V3.2.pdf)
-            "can_propose": tier_config, [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_87dd3f4c-2f55-4d34-9577-ea68edfb26a0/2d4780fd-16ba-4d9f-b230-4ef3aa7a1072/Forge-Framework-V3.3.pdf)
-            "has_emergency_access": tier_config, [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_87dd3f4c-2f55-4d34-9577-ea68edfb26a0/5817c8af-34d5-4aaf-a240-b033e41f083a/Forge-Framework-V4.pdf)
+            "label": tier_config, 
+            "can_spawn_agents": tier_config, 
+            "can_vote": tier_config, 
+            "can_propose": tier_config, 
+            "has_emergency_access": tier_config, 
         }
 ```
 
@@ -594,12 +594,6 @@ It is **deployment-ready** for enterprises, public sector, research, and decentr
 
 ## References
 
- [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_87dd3f4c-2f55-4d34-9577-ea68edfb26a0/2d4780fd-16ba-4d9f-b230-4ef3aa7a1072/Forge-Framework-V3.3.pdf) OpenClaw AI. (2026). OpenClaw — Personal AI Assistant. https://openclaw.ai  
- [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_87dd3f4c-2f55-4d34-9577-ea68edfb26a0/cb6b6eb6-8b6e-4fcc-b9d4-1932661e3ceb/Forge-Meta-Framework.pdf) GitHub. (2025). openclaw/openclaw: Your own personal AI assistant. https://github.com/openclaw/openclaw  
- [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_87dd3f4c-2f55-4d34-9577-ea68edfb26a0/667681c7-065a-47ba-b764-bf76a2267c8f/Forge-V3-Sozio-technische-Parameter-Domanen-Profile.pdf) Colony. (2024). Reputation-Based Voting in DAOs. https://blog.colony.io/what-is-reputation-based-voting-governance-in-daos  
- [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_87dd3f4c-2f55-4d34-9577-ea68edfb26a0/b6af6a2e-46bb-406d-8dbc-605f766cc025/Forge-Framework-V3.2.pdf) Ethereum. (2023). ERC-5192: Minimal Soulbound NFTs. https://eips.ethereum.org/EIPS/eip-5192  
- [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_87dd3f4c-2f55-4d34-9577-ea68edfb26a0/5817c8af-34d5-4aaf-a240-b033e41f083a/Forge-Framework-V4.pdf) Anthropic. (2026). Claude 3.5 Sonnet API Documentation. https://docs.anthropic.com/claude/docs  
- [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/164267452/5795d4d7-99a6-4ef9-9e89-766b45c4e73c/Forge-Framework-V3.2.pdf) Hardhat. (2026). Smart Contract Development Environment. https://hardhat.org/docs  
 [7] FastAPI. (2026). Modern Python Web Framework. https://fastapi.tiangolo.com  
 [8] Digital Ocean. (2026). Run Multiple OpenClaw AI Agents with Elastic Scaling. https://www.digitalocean.com/blog/openclaw-digitalocean-app-platform  
 [9] Lakera AI. (2026). OpenClaw Shows What Happens When AI Agents Act on Human Authority. https://www.lakera.ai/blog/openclaw-shows-what-happens-when-ai-agents-act-on-human-authority  
