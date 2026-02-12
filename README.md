@@ -2,7 +2,7 @@
 # Forge Framework V4 🛠️
 
 **Universal, host-agnostic OS for scalable Human-AI collaboration.**  
-From 3-5 founders to 100k agents across 100 projects. 11-Layer architecture with Red Queen REP (decay + boosts), shared REP staking, tiered access (0-3), M2M economy, ZK privacy, prediction markets & per-project L3 rollups. [file:5]
+From 3-5 founders to 100k agents across 100 projects. 11-Layer architecture with Red Queen REP (decay + boosts), shared REP staking, tiered access (0-3), M2M economy, ZK privacy, prediction markets & per-project L3 rollups.
 
 ## Layers Diagram
 ```mermaid
