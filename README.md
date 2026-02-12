@@ -1,10 +1,13 @@
-﻿# Forge Framework V4 🛠️
+﻿So passt deine README mit korrekten Links (lokale Pfade + EN‑Markdowns + gefixter Mermaid‑Block):
+
+```markdown
+# Forge Framework V4 🛠️
 
 **Universal, host-agnostic OS for scalable Human-AI collaboration.**  
 From 3-5 founders to 100k agents across 100 projects. 11-Layer architecture with Red Queen REP (decay + boosts), shared REP staking, tiered access (0-3), M2M economy, ZK privacy, prediction markets & per-project L3 rollups. [file:5]
 
 ## Layers Diagram
-`mermaid
+```mermaid
 graph TD
     A[Layer 1: Access<br/>DID/REP Gates] --> B[Layer 2: Agent Core<br/>OpenClaw Sandbox]
     B --> C[Layer 3: Communication<br/>Pi Protocol MQTT]
@@ -19,7 +22,7 @@ graph TD
     
     style A fill:#e1f5fe
     style K fill:#c8e6c9
-`
+```
 
 ## Core Features
 
@@ -32,10 +35,10 @@ graph TD
 
 | Tier | Min REP | Capabilities |
 |------|---------|--------------|
-| 0    | 0      | Read-only   |
-| 1    | 10     | Basic agents|
-| 2    | 100    | Vote, budget|
-| 3    | 500    | Killswitch  | 
+| 0    | 0       | Read-only    |
+| 1    | 10      | Basic agents |
+| 2    | 100     | Vote, budget |
+| 3    | 500     | Killswitch   | 
 
 ## Quickstart (Genesis Phase)
 
@@ -43,10 +46,10 @@ graph TD
 2. **Deploy Genesis Agent** (500 LOC Python): Mint contracts on Optimism.
 3. **Bootstrap Governance**: REP-weighted vote on policies.
 
-`ash
+```bash
 pip install openclaw web3 psycopg2
 python backend/genesis/genesis-agent.py  # Deploys DAO/REP
-`
+```
 
 ## Tech Stack
 
@@ -58,14 +61,19 @@ python backend/genesis/genesis-agent.py  # Deploys DAO/REP
 
 ## Docs
 
-- [V4 Full Spec](https://github.com/tkdev-forge/forge/main/docs/v4/Forge-Framework-V4.pdf)
-- [V3.3](https://github.com/tkdev-forge/forge/main/docs/v3.3/Forge-Framework-V3.3.pdf)
-- [V3.2](https://github.com/tkdev-forge/forge/main/docs/v3.2/Forge-Framework-V3.2.pdf)
+**English Markdown**
+
+- [V4 Full EN](docs/en/forge-v4-full-en.md)
+- [V3.3 Full EN](docs/en/forge-v3.3-full-en.md)
+- [V3.2 Full EN](docs/en/forge-v3.2-full-en.md)
+
+**Other**
+
 - [Deployment Examples](docs/deployment/)
+- [Socio-Technical Parameters (V3)](docs/en/forge-v3-socio-technical-parameters.md)
 
-
-
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)  
 [![Stars](https://img.shields.io/github/stars/tkdev-forge/forge?style=social)](https://github.com/tkdev-forge/forge/stargazers)
 
 **Keywords**: ai-agents, dao, rep, m2m, l3-rollup, openclaw
+```
