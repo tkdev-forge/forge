@@ -58,10 +58,11 @@ python backend/genesis/genesis-agent.py  # Deploys DAO/REP
 
 ## Docs
 
-- [V4 Full Spec](docs/v4/Forge Framework V4.pdf)
-- [V3.3](docs/v3.3/Forge Framework V3.3.pdf)
-- [V3.2](docs/v3.2/Forge Framework V3.2.pdf)
-- [Deployment](docs/deployment/)
+- [V4 Full Spec](https://github.com/tkdev-forge/forge/raw/main/docs/v4/Forge%20Framework%20V4.pdf)
+- [V3.3](https://github.com/tkdev-forge/forge/raw/main/docs/v3.3/Forge%20Framework%20V3.3.pdf)
+- [V3.2](https://github.com/tkdev-forge/forge/raw/main/docs/v3.2/Forge%20Framework%20V3.2.pdf)
+- [Deployment Examples](docs/deployment/)
+
 
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
