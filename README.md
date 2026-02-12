@@ -20,7 +20,7 @@ graph TD
     
     style A fill:#e1f5fe
     style K fill:#c8e6c9
-```
+```mermaid
 
 ## Core Features
 
