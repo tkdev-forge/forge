@@ -1,5 +1,3 @@
-﻿So passt deine README mit korrekten Links (lokale Pfade + EN‑Markdowns + gefixter Mermaid‑Block):
-
 ```markdown
 # Forge Framework V4 🛠️
 
