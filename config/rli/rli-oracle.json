@@ -1,0 +1,50 @@
+{
+  "enabled": true,
+  "platform_url": "https://rli-eval.forge.network",
+  "chainlink_oracle": {
+    "job_id": "rli-evaluation-job-001",
+    "oracle_address": "0x0000000000000000000000000000000000000000",
+    "fee_link": 0.1,
+    "comment": "Update oracle_address after Chainlink node setup"
+  },
+  "tier_requirements": {
+    "tier2": {
+      "min_automation_rate": 0.50,
+      "required_task_count": 3,
+      "min_elo_score": 800,
+      "description": "Senior Developer / Steward level - can spawn advanced agents"
+    },
+    "tier3": {
+      "min_automation_rate": 0.70,
+      "required_task_count": 5,
+      "min_elo_score": 1000,
+      "description": "CTO / Root level - kill-switch access"
+    }
+  },
+  "budget": {
+    "initial_evaluations": 100,
+    "cost_per_eval_usd": 2.34,
+    "total_budget_usd": 234,
+    "auto_replenish": true,
+    "replenish_threshold": 20,
+    "comment": "Budget automatically replenishes when < 20 evals remaining"
+  },
+  "evaluation_settings": {
+    "required_evaluators_per_task": 3,
+    "timeout_seconds": 3600,
+    "retry_attempts": 2,
+    "categories": [
+      "web-development",
+      "data-visualization",
+      "3d-rendering",
+      "document-preparation",
+      "video-editing",
+      "audio-production"
+    ]
+  },
+  "ipfs": {
+    "gateway": "https://ipfs.io/ipfs/",
+    "pinning_service": "pinata",
+    "api_key": "<PINATA_API_KEY>"
+  }
+}
