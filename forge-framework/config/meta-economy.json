@@ -1,0 +1,5 @@
+{
+  "enabled": true,
+  "chains": ["ethereum", "optimism", "solana", "polkadot"],
+  "metaRepWeights": {"governance": 0.4, "delivery": 0.4, "trust": 0.2}
+}

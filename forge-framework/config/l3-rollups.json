@@ -1,0 +1,5 @@
+{
+  "defaultStack": "op-stack",
+  "sharedSequencer": {"rotationHours": 24, "selectionMode": "rep-weighted"},
+  "projects": []
+}

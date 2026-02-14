@@ -1,0 +1,8 @@
+{
+  "tiers": [
+    {"id": 0, "label": "Citizen", "minREP": 0, "capabilities": ["read"]},
+    {"id": 1, "label": "Operator", "minREP": 10, "capabilities": ["vote", "spawn_agent"]},
+    {"id": 2, "label": "Steward", "minREP": 100, "capabilities": ["propose", "moderate"]},
+    {"id": 3, "label": "Root", "minREP": 500, "capabilities": ["emergency", "kill_switch"]}
+  ]
+}

@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS shadow_signals (
+  id SERIAL PRIMARY KEY,
+  agentid VARCHAR(128) NOT NULL,
+  score DOUBLE PRECISION NOT NULL,
+  signal_type VARCHAR(64) NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);

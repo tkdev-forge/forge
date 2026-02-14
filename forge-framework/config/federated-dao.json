@@ -1,0 +1,6 @@
+{
+  "federations": [
+    {"name": "forge-main", "votingModel": "rep-weighted", "quorum": 0.2}
+  ],
+  "bridges": ["meta-rep", "governance-signals"]
+}
