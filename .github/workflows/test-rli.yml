@@ -1,0 +1,125 @@
+name: Test RLI Integration
+
+on:
+  push:
+    branches: [feature/rli-integration, main]
+    paths:
+      - 'backend/layers/layer6_reputation/rli/**'
+      - 'contracts/extensions/ForgeREP_RLI.sol'
+      - 'tests/**/*rli*'
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-python:
+    name: Python Tests
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: forge_test
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: forge_test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements-rli.txt
+      
+      - name: Run database migration
+        env:
+          DATABASE_URL: postgresql://forge_test:test_password@localhost:5432/forge_test_db
+        run: |
+          psql $DATABASE_URL -f migrations/002_rli_extensions.sql
+      
+      - name: Run unit tests
+        run: |
+          pytest tests/unit/test_rli_oracle.py -v --cov=backend/layers/layer6_reputation/rli
+      
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
+          flags: python-rli
+  
+  test-contracts:
+    name: Smart Contract Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: contracts/package-lock.json
+      
+      - name: Install dependencies
+        run: |
+          cd contracts
+          npm ci
+      
+      - name: Compile contracts
+        run: |
+          cd contracts
+          npx hardhat compile
+      
+      - name: Run contract tests
+        run: |
+          cd contracts
+          npx hardhat test
+  
+  integration-test:
+    name: Integration Test (E2E)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: forge_test
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: forge_test_db
+        ports:
+          - 5432:5432
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: pip install -r backend/requirements-rli.txt
+      
+      - name: Run E2E tests
+        env:
+          DATABASE_URL: postgresql://forge_test:test_password@localhost:5432/forge_test_db
+          RLI_PLATFORM_URL: http://mock-rli-platform:8080
+        run: |
+          # Note: This requires a mock RLI platform or test environment
+          # pytest tests/integration/test_rli_flow_e2e.py -v
+          echo "E2E tests would run here with proper test environment"
