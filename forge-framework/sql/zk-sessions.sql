@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS zk_sessions (
+  session_id VARCHAR(128) PRIMARY KEY,
+  requester VARCHAR(128) NOT NULL,
+  rep_min BIGINT NOT NULL,
+  tier INTEGER NOT NULL,
+  nullifier VARCHAR(128) UNIQUE NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);

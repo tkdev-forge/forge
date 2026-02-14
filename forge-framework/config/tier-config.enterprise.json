@@ -1,0 +1,8 @@
+{
+  "tiers": [
+    {"id": 0, "label": "Viewer", "minREP": 0, "capabilities": ["read"]},
+    {"id": 1, "label": "Builder", "minREP": 10, "capabilities": ["execute_jobs"]},
+    {"id": 2, "label": "Manager", "minREP": 100, "capabilities": ["allocate_budget", "propose"]},
+    {"id": 3, "label": "Admin", "minREP": 500, "capabilities": ["veto", "emergency"]}
+  ]
+}

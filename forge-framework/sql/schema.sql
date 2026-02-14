@@ -1,0 +1,32 @@
+CREATE TABLE IF NOT EXISTS members (
+  address VARCHAR(128) PRIMARY KEY,
+  name VARCHAR(120) NOT NULL,
+  rep DOUBLE PRECISION DEFAULT 0,
+  tier INTEGER DEFAULT 0,
+  role VARCHAR(64) DEFAULT 'member'
+);
+
+CREATE TABLE IF NOT EXISTS agents (
+  agentid VARCHAR(128) PRIMARY KEY,
+  agenttype VARCHAR(64) NOT NULL,
+  owneraddress VARCHAR(128) REFERENCES members(address),
+  ownerrep DOUBLE PRECISION DEFAULT 0,
+  tier INTEGER DEFAULT 0,
+  status VARCHAR(32) DEFAULT 'active',
+  createdat TIMESTAMP DEFAULT NOW(),
+  lastheartbeat TIMESTAMP DEFAULT NOW(),
+  isrogue BOOLEAN DEFAULT FALSE,
+  shadowrepactive BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE IF NOT EXISTS rep_history (
+  id SERIAL PRIMARY KEY,
+  memberaddress VARCHAR(128) NOT NULL,
+  agentid VARCHAR(128),
+  repchange DOUBLE PRECISION NOT NULL,
+  reason VARCHAR(255) NOT NULL,
+  tierbefore INTEGER DEFAULT 0,
+  tierafter INTEGER DEFAULT 0,
+  txhash VARCHAR(128),
+  timestamp TIMESTAMP DEFAULT NOW()
+);

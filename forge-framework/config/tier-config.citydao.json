@@ -1,0 +1,8 @@
+{
+  "tiers": [
+    {"id": 0, "label": "Guest", "minREP": 0, "capabilities": ["observe"]},
+    {"id": 1, "label": "Contributor", "minREP": 10, "capabilities": ["vote"]},
+    {"id": 2, "label": "Coordinator", "minREP": 100, "capabilities": ["propose", "spawn_agent"]},
+    {"id": 3, "label": "Custodian", "minREP": 500, "capabilities": ["policy_override"]}
+  ]
+}

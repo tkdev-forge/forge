@@ -1,0 +1,5 @@
+{
+  "research": {"decayRate": 3, "booster": 130, "windowDays": 45},
+  "product": {"decayRate": 5, "booster": 100, "windowDays": 30},
+  "city": {"decayRate": 4, "booster": 110, "windowDays": 60}
+}
