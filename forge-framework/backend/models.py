@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, Float, ForeignKey, Integer, String
+from sqlalchemy import Boolean, DateTime, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from database import Base
@@ -45,3 +45,44 @@ class RepHistory(Base):
     tierafter: Mapped[int] = mapped_column(Integer, default=0)
     txhash: Mapped[str | None] = mapped_column(String(128), nullable=True)
     timestamp: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+
+class Proposal(Base):
+    __tablename__ = "proposals"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    title: Mapped[str] = mapped_column(String(255), nullable=False)
+    body: Mapped[str] = mapped_column(Text, nullable=False)
+    proposer: Mapped[str] = mapped_column(ForeignKey("members.address"), nullable=False)
+    status: Mapped[str] = mapped_column(String(32), default="active")
+    votes_for: Mapped[int] = mapped_column(Integer, default=0)
+    votes_against: Mapped[int] = mapped_column(Integer, default=0)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    execution_tx: Mapped[str | None] = mapped_column(String(128), nullable=True)
+
+
+class Trade(Base):
+    __tablename__ = "trades"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    buyer_agent: Mapped[str] = mapped_column(ForeignKey("agents.agentid"), nullable=False)
+    seller_agent: Mapped[str] = mapped_column(ForeignKey("agents.agentid"), nullable=False)
+    resource_type: Mapped[str] = mapped_column(String(32), nullable=False)
+    amount: Mapped[float] = mapped_column(Float, nullable=False)
+    price: Mapped[float] = mapped_column(Float, nullable=False)
+    status: Mapped[str] = mapped_column(String(32), default="requested")
+    escrow_tx: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+
+class AgentBudget(Base):
+    __tablename__ = "agent_budgets"
+
+    agent_id: Mapped[str] = mapped_column(ForeignKey("agents.agentid"), primary_key=True)
+    daily_limit: Mapped[float] = mapped_column(Float, default=100.0)
+    weekly_limit: Mapped[float] = mapped_column(Float, default=500.0)
+    spent_today: Mapped[float] = mapped_column(Float, default=0.0)
+    spent_this_week: Mapped[float] = mapped_column(Float, default=0.0)
+    last_reset_daily: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    last_reset_weekly: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
