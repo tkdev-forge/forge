@@ -21,7 +21,9 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install deps
-        run: pip install -r backend/requirements.txt
+        run: |
+          pip install -r backend/requirements.txt
+          pip install pytest-cov
       - name: Black check
         run: black --check backend tests
       - name: Pytest with coverage
