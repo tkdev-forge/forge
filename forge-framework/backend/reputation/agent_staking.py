@@ -11,6 +11,9 @@ def deploy_agent_with_staking(db: Session, owner_address: str, agent_type: str, 
     if not owner:
         raise ValueError("owner not found")
 
+    if stake_percentage < 0 or stake_percentage > 1:
+        raise ValueError("stake_percentage must be between 0 and 1")
+
     stake = owner.rep * stake_percentage
     tier_before = owner.tier
     owner.rep = max(0.0, owner.rep - stake)
