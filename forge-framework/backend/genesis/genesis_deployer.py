@@ -1,6 +1,7 @@
 import argparse
 import csv
 import json
+import logging
 import os
 from pathlib import Path
 from typing import Any
@@ -24,6 +25,9 @@ class GenesisDeployer:
             raise ValueError("Missing RPC URL. Set ALCHEMY_RPC or RPC_URL")
         self.w3 = Web3(Web3.HTTPProvider(self.rpc_url))
         self.deployer_address = os.getenv("DEPLOYER_ADDRESS", "0x0000000000000000000000000000000000000000")
+        self.deployer_private_key = os.getenv("DEPLOYER_PRIVATE_KEY")
+        self.use_external_signer = os.getenv("DEPLOYER_USE_EXTERNAL_SIGNER", "false").lower() == "true"
+        self.logger = logging.getLogger(__name__)
 
     def _find_artifact(self, contract_name: str) -> Path:
         paths = [
@@ -45,15 +49,90 @@ class GenesisDeployer:
             bytecode = bytecode.get("object")
         abi = payload.get("abi")
 
-        if not abi or not bytecode:
+        if not abi or not bytecode or not isinstance(bytecode, str) or not bytecode.startswith("0x") or len(bytecode) <= 2:
             raise ValueError(f"Invalid artifact format for {contract_name}: missing abi/bytecode")
 
         return {"abi": abi, "bytecode": bytecode}
 
-    def _pseudo_deploy(self, contract_name: str) -> str:
-        # Deterministic pseudo-address fallback for plan-mode/dev environments.
-        salt = Web3.keccak(text=f"{self.network}:{contract_name}").hex()[-40:]
-        return Web3.to_checksum_address(f"0x{salt}")
+    def _validate_deployment_prerequisites(self) -> str:
+        if not self.w3.is_connected():
+            raise ConnectionError("RPC is not reachable: self.w3.is_connected() is False")
+
+        if not Web3.is_address(self.deployer_address):
+            raise ValueError("DEPLOYER_ADDRESS must be a valid Ethereum address")
+
+        checksum_deployer = Web3.to_checksum_address(self.deployer_address)
+        zero_address = "0x0000000000000000000000000000000000000000"
+
+        if self.deployer_private_key:
+            account = self.w3.eth.account.from_key(self.deployer_private_key)
+            signer_address = Web3.to_checksum_address(account.address)
+            if checksum_deployer != zero_address and checksum_deployer != signer_address:
+                raise ValueError(
+                    "DEPLOYER_ADDRESS does not match DEPLOYER_PRIVATE_KEY signer address "
+                    f"({checksum_deployer} != {signer_address})"
+                )
+            return signer_address
+
+        if self.use_external_signer:
+            if checksum_deployer == zero_address:
+                raise ValueError("DEPLOYER_ADDRESS must be set when DEPLOYER_USE_EXTERNAL_SIGNER=true")
+            return checksum_deployer
+
+        raise ValueError(
+            "No signer configured. Set DEPLOYER_PRIVATE_KEY or DEPLOYER_USE_EXTERNAL_SIGNER=true"
+        )
+
+    def _next_tx_params(self, deployer: str, nonce: int) -> dict[str, Any]:
+        latest_block = self.w3.eth.get_block("latest")
+        tx_params: dict[str, Any] = {
+            "from": deployer,
+            "nonce": nonce,
+            "chainId": self.w3.eth.chain_id,
+        }
+
+        if latest_block.get("baseFeePerGas") is not None:
+            try:
+                priority_fee = self.w3.eth.max_priority_fee
+            except Exception:
+                priority_fee = self.w3.to_wei(2, "gwei")
+            tx_params["maxPriorityFeePerGas"] = priority_fee
+            tx_params["maxFeePerGas"] = int(latest_block["baseFeePerGas"] + (priority_fee * 2))
+        else:
+            tx_params["gasPrice"] = self.w3.eth.gas_price
+
+        return tx_params
+
+    def _deploy_contract(
+        self,
+        contract_name: str,
+        artifact: dict[str, Any],
+        constructor_args: list[Any],
+        deployer: str,
+        nonce: int,
+    ) -> tuple[str, str]:
+        contract = self.w3.eth.contract(abi=artifact["abi"], bytecode=artifact["bytecode"])
+        constructor = contract.constructor(*constructor_args)
+
+        tx_params = self._next_tx_params(deployer, nonce)
+        gas_estimate = constructor.estimate_gas({"from": deployer})
+        tx_params["gas"] = int(gas_estimate * 1.2)
+
+        if self.deployer_private_key:
+            unsigned_tx = constructor.build_transaction(tx_params)
+            signed_tx = self.w3.eth.account.sign_transaction(unsigned_tx, private_key=self.deployer_private_key)
+            tx_hash = self.w3.eth.send_raw_transaction(signed_tx.raw_transaction)
+        else:
+            tx_hash = constructor.transact(tx_params)
+
+        tx_hash_hex = tx_hash.hex()
+        self.logger.info("%s deployment txHash=%s", contract_name, tx_hash_hex)
+
+        receipt = self.w3.eth.wait_for_transaction_receipt(tx_hash)
+        if receipt.status != 1 or not receipt.contractAddress:
+            raise RuntimeError(f"{contract_name} deployment failed (tx={tx_hash_hex})")
+
+        return Web3.to_checksum_address(receipt.contractAddress), tx_hash_hex
 
     def _load_profiles(self) -> dict[str, Any]:
         with PROFILES_FILE.open("r", encoding="utf-8") as f:
@@ -69,17 +148,54 @@ class GenesisDeployer:
             json.dump(existing, f, indent=2)
 
     def deploy_forge_stack(self, profile: str, founders: list[str]) -> dict[str, Any]:
+        signer_address = self._validate_deployment_prerequisites()
         profiles = self._load_profiles()
         if profile not in profiles:
             raise ValueError(f"Unknown profile: {profile}")
 
         contracts = ["ForgeREP", "ForgeDAO", "ForgePolicy"]
         addresses: dict[str, str] = {}
+        tx_hashes: dict[str, str] = {}
 
-        for contract_name in contracts:
-            # Validate artifacts exist and parseable even in pseudo deploy mode.
-            self._load_artifact(contract_name)
-            addresses[contract_name] = self._pseudo_deploy(contract_name)
+        artifacts = {name: self._load_artifact(name) for name in contracts}
+
+        nonce = self.w3.eth.get_transaction_count(signer_address, "pending")
+
+        try:
+            forge_rep, tx_hash = self._deploy_contract(
+                contract_name="ForgeREP",
+                artifact=artifacts["ForgeREP"],
+                constructor_args=[],
+                deployer=signer_address,
+                nonce=nonce,
+            )
+            addresses["ForgeREP"] = forge_rep
+            tx_hashes["ForgeREP"] = tx_hash
+            nonce += 1
+
+            forge_dao, tx_hash = self._deploy_contract(
+                contract_name="ForgeDAO",
+                artifact=artifacts["ForgeDAO"],
+                constructor_args=[forge_rep],
+                deployer=signer_address,
+                nonce=nonce,
+            )
+            addresses["ForgeDAO"] = forge_dao
+            tx_hashes["ForgeDAO"] = tx_hash
+            nonce += 1
+
+            forge_policy, tx_hash = self._deploy_contract(
+                contract_name="ForgePolicy",
+                artifact=artifacts["ForgePolicy"],
+                constructor_args=[forge_dao],
+                deployer=signer_address,
+                nonce=nonce,
+            )
+            addresses["ForgePolicy"] = forge_policy
+            tx_hashes["ForgePolicy"] = tx_hash
+        except Exception:
+            # Intentionally avoid writing partial contract state to config/onchain.json.
+            raise
 
         founder_allocations = []
         initial_rep = int(os.getenv("GENESIS_INITIAL_REP", "100"))
@@ -92,12 +208,13 @@ class GenesisDeployer:
 
         output = {
             "network": self.network,
-            "deployer": self.deployer_address,
+            "deployer": signer_address,
             "contracts": addresses,
+            "tx_hashes": tx_hashes,
             "profile": profile,
             "profile_config": profiles[profile],
             "founders": founder_allocations,
-            "rpc_connected": self.w3.is_connected(),
+            "rpc_connected": True,
         }
         self._write_onchain(output)
         return output
