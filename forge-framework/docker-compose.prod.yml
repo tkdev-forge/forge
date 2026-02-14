@@ -1,0 +1,48 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-forge}
+      POSTGRES_USER: ${POSTGRES_USER:-forge}
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    secrets:
+      - postgres_password
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+      target: runtime
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-forge}
+      POSTGRES_USER: ${POSTGRES_USER:-forge}
+      ENVIRONMENT: production
+      JWT_REQUIRED: "true"
+    command: >
+      /bin/sh -c '
+      export DB_PASS=$$(cat /run/secrets/postgres_password) &&
+      export JWT_SECRET=$$(cat /run/secrets/jwt_secret) &&
+      export DATABASE_URL="postgresql+psycopg2://$${POSTGRES_USER}:$${DB_PASS}@postgres:5432/$${POSTGRES_DB}" &&
+      uvicorn main:app --host 0.0.0.0 --port 8000'
+    secrets:
+      - postgres_password
+      - jwt_secret
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+
+secrets:
+  postgres_password:
+    file: ./secrets/postgres_password.txt
+  jwt_secret:
+    file: ./secrets/jwt_secret.txt
+
+volumes:
+  pgdata:
