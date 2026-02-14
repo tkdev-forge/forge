@@ -74,7 +74,7 @@ contract PredictionMarketEngine {
         uint256 participantNo = position.noStake;
         require(participantYes > 0 || participantNo > 0, "no position");
 
-        bool yesWins = m.finalPrice > 0;
+        bool yesWins = m.finalPrice == 1;
         uint256 winningPool = yesWins ? m.totalYesStake : m.totalNoStake;
         uint256 losingPool = yesWins ? m.totalNoStake : m.totalYesStake;
         uint256 participantWinningStake = yesWins ? participantYes : participantNo;
@@ -100,6 +100,7 @@ contract PredictionMarketEngine {
         require(msg.sender == m.creator || rep.getTier(msg.sender) >= 3, "not allowed");
         require(block.timestamp >= m.resolutionDate, "too early");
         require(!m.resolved, "already resolved");
+        require(finalPrice == 0 || finalPrice == 1, "invalid binary outcome");
 
         m.finalPrice = finalPrice;
         m.resolved = true;
