@@ -10,4 +10,4 @@ redis==5.0.8
 pytest==9.0.2
 black==24.10.0
 paho-mqtt==2.1.0
-python-multipart==0.0.9
+python-multipart==0.0.22
