@@ -6,7 +6,9 @@ from sqlalchemy.orm import Session
 from models import Agent, Member, RepHistory
 
 
-def deploy_agent_with_staking(db: Session, owner_address: str, agent_type: str, stake_percentage: float = 0.15) -> Agent:
+def deploy_agent_with_staking(
+    db: Session, owner_address: str, agent_type: str, stake_percentage: float = 0.15
+) -> Agent:
     owner = db.query(Member).filter(Member.address == owner_address).first()
     if not owner:
         raise ValueError("owner not found")

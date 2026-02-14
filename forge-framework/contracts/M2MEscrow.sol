@@ -1,12 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-contract M2MEscrow {
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+
+contract M2MEscrow is ReentrancyGuard {
     event TradeExecuted(bytes32 indexed txHash, address indexed buyer, address indexed seller, string resource, uint256 amount, uint256 price);
 
     function executeTrade(address buyer, address seller, string calldata resource, uint256 amount, uint256 price)
         external
         payable
+        nonReentrant
         returns (bytes32 txHash)
     {
         require(msg.sender == buyer, "caller must be buyer");

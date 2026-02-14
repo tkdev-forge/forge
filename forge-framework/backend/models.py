@@ -21,7 +21,9 @@ class Agent(Base):
 
     agentid: Mapped[str] = mapped_column(String(128), primary_key=True)
     agenttype: Mapped[str] = mapped_column(String(64), nullable=False)
-    owneraddress: Mapped[str] = mapped_column(ForeignKey("members.address"), nullable=False)
+    owneraddress: Mapped[str] = mapped_column(
+        ForeignKey("members.address"), nullable=False
+    )
     ownerrep: Mapped[float] = mapped_column(Float, default=0)
     tier: Mapped[int] = mapped_column(Integer, default=0)
     status: Mapped[str] = mapped_column(String(32), default="active")

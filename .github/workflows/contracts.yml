@@ -1,0 +1,43 @@
+name: contracts
+
+on:
+  pull_request:
+    paths:
+      - "forge-framework/contracts/**"
+      - ".github/workflows/contracts.yml"
+  push:
+    branches: [main]
+
+jobs:
+  forge-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: forge-framework/contracts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+      - name: Install Node deps
+        run: npm ci
+      - name: Install forge-std
+        run: |
+          forge install foundry-rs/forge-std --no-commit
+      - name: Run tests + gas report
+        run: forge test --gas-report
+
+  slither:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: forge-framework/contracts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          pip install slither-analyzer
+          npm ci
+      - name: Run slither (fail on high severity)
+        run: slither . --filter-paths "node_modules|lib" --fail-high

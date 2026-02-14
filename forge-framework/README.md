@@ -19,6 +19,13 @@ Full-stack reference implementation for the Forge 11-layer human-AI collaboratio
    npx hardhat run scripts/deploy.js --network sepolia
    ```
 
+## Production readiness updates
+
+- FastAPI now supports JWT-based auth, REP-tier endpoint protection, rate limiting, and `/health` + `/metrics` endpoints.
+- Foundry test and deploy workflow added for `ForgeREP` (including gas report + Optimism Sepolia-compatible script).
+- CI checks include `pytest`, `black`, `forge test --gas-report`, and Slither high-severity fail gates.
+- Use `.env.example` + pydantic settings validation for environment sanity.
+
 ## Layers implemented
 
 - L0: Genesis bootstrap (`backend/agents/genesisagent.py`, `scripts/genesis-select-profile.py`)
