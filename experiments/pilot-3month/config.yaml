@@ -1,0 +1,35 @@
+experiment:
+  name: "forge-pilot-3month"
+  start_date: "2026-03-01"
+  duration_months: 3
+  primary_metric: "rli_automation_rate"
+
+groups:
+  control:
+    size: 5
+    config:
+      red_queen_decay: 0.0
+      m2m_economy: false
+      rli_evaluation: true
+  treatment:
+    size: 5
+    config:
+      red_queen_decay: 0.05
+      m2m_economy: true
+      tier_system: true
+      rli_evaluation: true
+
+task_pool:
+  source: "rli"
+  categories: ["web-dev"]
+  task_count: 50
+  file: "../../data/rli-tasks/web-dev.json"
+
+database:
+  type: "postgresql"
+  host: "localhost"
+  database: "forge_pilot"
+
+output:
+  results_dir: "./results/"
+  format: "csv"

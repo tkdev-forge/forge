@@ -1,0 +1,11 @@
+rli:
+  enabled: true
+  platform_url: "https://rli-eval.forge.network"
+  admin_token: "${RLI_ADMIN_TOKEN}"
+  chainlink:
+    oracle_address: "0xRLIOracle..."
+    job_id: "rli-evaluation-job-001"
+    fee_link: 0.1
+  budget:
+    initial_evaluations: 100
+    cost_per_eval_usd: 2.34

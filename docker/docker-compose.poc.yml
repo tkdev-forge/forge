@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: forge_pilot
+      POSTGRES_USER: forge
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-forge}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  rli-oracle:
+    build: ../src/backend
+    command: python -m layers.layer6_reputation.rli_oracle
+    environment:
+      - RLI_PLATFORM_URL=https://rli-eval.forge.network
+      - RLI_ADMIN_TOKEN=${RLI_ADMIN_TOKEN}
+    ports:
+      - "6688:6688"
+    depends_on:
+      - postgres
+
+  research-dashboard:
+    build: ../src/frontend/research-dashboard
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
