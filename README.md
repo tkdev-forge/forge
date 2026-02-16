@@ -219,9 +219,9 @@ We commit to:
 
 ## 📧 Contact
 
-- **Research Design**: [Research Lead Email]
-- **Implementation**: [Dev Lead Email]
-- **Partnerships**: [PI Email]
+- **Research Design**: [dasisteineemailadresse@gmail.com]
+- **Implementation**: [dasisteineemailadresse@gmail.com]
+- **Partnerships**: [dasisteineemailadresse@gmail.com]
 - **Issues/Questions**: [GitHub Issues](https://github.com/tkdev-forge/forge/issues)
 
 ## 📄 License
