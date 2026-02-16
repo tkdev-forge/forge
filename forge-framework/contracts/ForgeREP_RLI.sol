@@ -34,6 +34,7 @@ contract ForgeREP_RLI is ForgeREP, ChainlinkClient, AccessControl, ReentrancyGua
         address member;
         string taskId;
         string taskCategory;
+        uint256 requestedAt;
         bool exists;
     }
 
@@ -50,8 +51,15 @@ contract ForgeREP_RLI is ForgeREP, ChainlinkClient, AccessControl, ReentrancyGua
     uint256 public remainingEvaluations;
     bool public oraclePaused;
 
+    uint256 public constant AUTOMATION_RATE_SCALE = 100000;
+    uint256 public constant ELO_BASELINE = 1000;
+    uint256 public constant ELO_BONUS_DIVISOR = 10;
+    uint256 public constant MAX_REP_REWARD = 1_000_000;
+    uint256 public constant ORACLE_TIMEOUT = 1 days;
+
     event RLIEvaluationRequested(bytes32 indexed requestId, address indexed member, string taskId);
     event RLIEvaluationFulfilled(bytes32 indexed requestId, address indexed member, uint256 repEarned);
+    event RLIEvaluationExpired(bytes32 indexed requestId, address indexed member);
 
     constructor(address linkToken, address oracle, bytes32 jobId, uint256 fee, uint256 budget)
         ForgeREP()
@@ -86,7 +94,7 @@ contract ForgeREP_RLI is ForgeREP, ChainlinkClient, AccessControl, ReentrancyGua
         req.add("ipfsHash", deliverableIPFSHash);
 
         requestId = sendChainlinkRequestTo(chainlinkOracle, req, chainlinkFee);
-        pendingRequests[requestId] = PendingRequest(member, taskId, taskCategory, true);
+        pendingRequests[requestId] = PendingRequest(member, taskId, taskCategory, block.timestamp, true);
         remainingEvaluations -= 1;
 
         emit RLIEvaluationRequested(requestId, member, taskId);
@@ -95,15 +103,14 @@ contract ForgeREP_RLI is ForgeREP, ChainlinkClient, AccessControl, ReentrancyGua
     function fulfillRLIEvaluation(
         bytes32 requestId,
         uint256 automationRate,
+        bool hasEloScore,
         uint256 eloScore,
         uint256 economicValue
     ) external recordChainlinkFulfillment(requestId) nonReentrant {
         PendingRequest memory pending = pendingRequests[requestId];
         require(pending.exists, "unknown request");
 
-        uint256 baseREP = (automationRate * economicValue) / 100000;
-        uint256 eloBonus = eloScore > 1000 ? (eloScore - 1000) / 10 : 0;
-        uint256 total = baseREP + eloBonus;
+        uint256 total = _calculateREPFromRLI(automationRate, hasEloScore, eloScore, economicValue);
 
         bool isNewMember = reputation[pending.member] == 0;
         reputation[pending.member] += total;
@@ -132,6 +139,44 @@ contract ForgeREP_RLI is ForgeREP, ChainlinkClient, AccessControl, ReentrancyGua
         delete pendingRequests[requestId];
 
         emit RLIEvaluationFulfilled(requestId, pending.member, total);
+    }
+
+    function cancelExpiredRequest(bytes32 requestId) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        PendingRequest memory pending = pendingRequests[requestId];
+        require(pending.exists, "unknown request");
+        require(block.timestamp >= pending.requestedAt + ORACLE_TIMEOUT, "request active");
+
+        delete pendingRequests[requestId];
+        remainingEvaluations += 1;
+
+        emit RLIEvaluationExpired(requestId, pending.member);
+    }
+
+    function _calculateREPFromRLI(uint256 automationRate, bool hasEloScore, uint256 eloScore, uint256 economicValue)
+        internal
+        pure
+        returns (uint256)
+    {
+        if (economicValue == 0) {
+            return 0;
+        }
+
+        uint256 cappedAutomationRate = automationRate > AUTOMATION_RATE_SCALE ? AUTOMATION_RATE_SCALE : automationRate;
+        uint256 baseREP = (cappedAutomationRate * economicValue) / AUTOMATION_RATE_SCALE;
+
+        uint256 normalizedEloScore = hasEloScore ? eloScore : ELO_BASELINE;
+        uint256 eloBonus = normalizedEloScore > ELO_BASELINE ? (normalizedEloScore - ELO_BASELINE) / ELO_BONUS_DIVISOR : 0;
+
+        uint256 reward = baseREP + eloBonus;
+        return reward > MAX_REP_REWARD ? MAX_REP_REWARD : reward;
+    }
+
+    function previewREPReward(uint256 automationRate, bool hasEloScore, uint256 eloScore, uint256 economicValue)
+        external
+        pure
+        returns (uint256)
+    {
+        return _calculateREPFromRLI(automationRate, hasEloScore, eloScore, economicValue);
     }
 
     function _checkTierQualification(address member, uint8 tier) internal {
