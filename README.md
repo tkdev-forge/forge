@@ -160,7 +160,7 @@ Layer 9 (Monitoring):  Failure detection → Measure system reliability
 ```bibtex
 @misc{forge2026proposal,
   title={Forge: A Proposed Framework for Measuring AI Agent Efficiency},
-  author={[Your Name]},
+  author={[Tim Kosakatis]},
   howpublished={GitHub Repository},
   year={2026},
   note={Research proposal - no empirical data yet}
