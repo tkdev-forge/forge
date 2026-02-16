@@ -1,0 +1,21 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+test = "test"
+script = "script"
+solc = "0.8.24"
+optimizer = true
+optimizer_runs = 200
+
+# Test settings
+verbosity = 2
+fuzz = { runs = 256 }
+invariant = { runs = 128, depth = 32 }
+
+[rpc_endpoints]
+optimism_sepolia = "${OPTIMISM_SEPOLIA_RPC}"
+
+[profile.ci]
+fuzz = { runs = 1000 }
+invariant = { runs = 500, depth = 64 }

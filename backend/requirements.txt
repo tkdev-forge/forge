@@ -1,0 +1,9 @@
+# Forge PoC backend dependencies
+# Runtime baseline: Python 3.11.x
+SQLAlchemy==2.0.35
+psycopg2-binary==2.9.9
+FastAPI
+httpx
+web3
+pytest
+pytest-asyncio
