@@ -4,9 +4,16 @@ import time
 from dataclasses import dataclass
 from datetime import datetime
 
+from src.backend.measurement.interfaces import (
+    AgentInterface,
+    EfficiencyMeasurementInterface,
+    RLIEvaluation,
+    TaskDefinition,
+)
+
 
 @dataclass
-class EfficiencyMeasurement:
+class EfficiencyMeasurement(EfficiencyMeasurementInterface):
     measurement_id: str
     agent_id: str
     task_id: str
@@ -32,12 +39,12 @@ class EfficiencyTracker:
         self.experiment_name = experiment_name
         self.db = db_connection
 
-    def track(self, agent, task):
+    def track(self, agent: AgentInterface, task: TaskDefinition):
         return MeasurementContext(self, agent, task)
 
 
 class MeasurementContext:
-    def __init__(self, tracker: EfficiencyTracker, agent, task):
+    def __init__(self, tracker: EfficiencyTracker, agent: AgentInterface, task: TaskDefinition):
         self.tracker = tracker
         self.agent = agent
         self.task = task
@@ -53,7 +60,7 @@ class MeasurementContext:
         duration = time.time() - self.start_time
         rli_result = self._request_rli_evaluation()
 
-        quality_adjusted_value = self.task.economic_value * rli_result.automation_rate
+        quality_adjusted_value = self.task.value * rli_result.automation_rate
         total_cost = self.compute_cost + 2.34
         profit = quality_adjusted_value - total_cost
         roi = profit / total_cost if total_cost else 0
@@ -82,10 +89,10 @@ class MeasurementContext:
         self._save_measurement(measurement)
         return False
 
-    def _request_rli_evaluation(self):
+    def _request_rli_evaluation(self) -> RLIEvaluation:
         return self.agent.request_rli_evaluation(self.task)
 
-    def _calculate_rep(self, rli_result):
+    def _calculate_rep(self, rli_result: RLIEvaluation) -> int:
         return int((rli_result.automation_rate * rli_result.economic_value) / 100)
 
     def _save_measurement(self, measurement: EfficiencyMeasurement):
